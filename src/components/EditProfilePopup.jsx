@@ -6,53 +6,27 @@ function EditProfilePopup(props) {
 
   const currentUser = useContext(CurrentUserContext);
 
-  // const [name, setName] = useState('');
-  // const [description, setDescription] = useState('');
-
-  const [userData, setUserData] = useState({
+  const [inputValues, setInputValues] = useState({
     name: '',
     about: ''
   })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData({
-      ...userData,
+    setInputValues({
+      ...inputValues,
       [name]: value,
     })
   }
 
   useEffect(() => {
-    setUserData(currentUser);
+    setInputValues(currentUser);
   }, [currentUser])
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onUpdateUser(userData);
+    props.onUpdateUser(inputValues);
   };
-  
-
-
-  // function handleNameChange(evt) {
-  //     setName(evt.target.value);
-  // }
-
-  // function handleDescriptionChange(evt) {
-  //     setDescription(evt.target.value);
-  // }
-
-  // useEffect(() => {
-  //   setName(currentUser.name);
-  //   setDescription(currentUser.about);
-  // }, [currentUser]);
-
-  // function handleSubmit(evt) {
-  //   evt.preventDefault();
-  //   props.onUpdateUser({
-  //     name,
-  //     about: description,
-  //   });
-  // }
 
   return (
     <PopupWithForm
@@ -70,7 +44,7 @@ function EditProfilePopup(props) {
           type="text"
           id="name"
           name="name"
-          value={userData.name || ''}
+          value={inputValues.name || ''}
           placeholder="Имя"
           minLength="2"
           maxLength="40"
@@ -85,7 +59,7 @@ function EditProfilePopup(props) {
           type="text"
           id="about"
           name="about"
-          value={userData.about || ''}
+          value={inputValues.about || ''}
           placeholder="О себе"
           minLength="2"
           maxLength="200"
