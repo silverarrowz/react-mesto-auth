@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { ProtectedRoute } from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
 import Header from "./Header";
@@ -18,7 +19,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
 
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(true);
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -141,7 +142,9 @@ function App() {
 
           <Routes>
             <Route path="/" element={
-              <Main
+              <ProtectedRoute
+                element={Main}
+                isLoggedIn={isLoggedIn}
                 cards={cards}
                 onEditAvatar={handleEditAvatarClick}
                 onEditProfile={handleEditProfileClick}
@@ -154,6 +157,8 @@ function App() {
 
             <Route path="/sign-in" element={<Login />} />
             <Route path="/sign-up" element={<Register />} />
+
+            <Route path="/*" element={<Navigate to={isLoggedIn ? "/" : "/sign-in"} replace />} />
           </Routes>
 
           <Footer />
