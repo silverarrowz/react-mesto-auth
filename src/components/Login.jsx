@@ -1,7 +1,10 @@
 import { useState } from "react";
+import * as api from "../utils/apiAuth";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ onLogin }) => {
+const Login = ({ handleLogin, setUserEmail, setInfoToolTipOpen, setAuthSuccess }) => {
 
+    const navigate = useNavigate();
     const [inputValues, setInputValues] = useState({
         email: "",
         password: "",
@@ -17,7 +20,20 @@ const Login = ({ onLogin }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onLogin(inputValues.email, inputValues.password);
+        api.authorize(inputValues.email, inputValues.password)
+            .then((data) => {
+                if (data) {
+                    setUserEmail(inputValues.email);
+                    handleLogin();
+                    navigate("/");
+                    localStorage.setItem("jwt", data.token);
+                }
+            })
+            .catch((err) => {
+                setAuthSuccess(false);
+                setInfoToolTipOpen(true);
+                console.error(err);
+            });
     }
 
     return (

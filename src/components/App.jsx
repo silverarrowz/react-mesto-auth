@@ -51,21 +51,6 @@ function App() {
     // eslint-disable-next-line
   }, [])
 
-  const handleLogin = (email, password) => {
-    setLoggedIn(true);
-    auth.authorize(email, password)
-      .then((data) => {
-        setUserEmail(email);
-        navigate("/");
-        localStorage.setItem("jwt", data.token);
-      })
-      .catch((err) => {
-        console.error(err);
-        setAuthSuccess(false);
-        setInfoToolTipOpen(true);
-      });
-  }
-
   const handleLogout = () => {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
@@ -209,12 +194,19 @@ function App() {
 
             <Route
               path="/sign-in"
-              element={<Login onLogin={handleLogin} />} />
+              element={<Login
+                handleLogin={() => setLoggedIn(true)}
+                setUserEmail={setUserEmail}
+                setAuthSuccess={setAuthSuccess}
+                setInfoToolTipOpen={setInfoToolTipOpen}
+              />} />
+
             <Route
               path="/sign-up"
               element={<Register
                 setInfoToolTipOpen={setInfoToolTipOpen}
                 setAuthSuccess={setAuthSuccess} />} />
+
             <Route
               path="/*"
               element={<Navigate to={isLoggedIn ? "/" : "/sign-in"} replace />} />
