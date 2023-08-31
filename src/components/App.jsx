@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
@@ -14,12 +14,55 @@ import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 
 import api from "../utils/api";
+import * as auth from "../utils/apiAuth";
 
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
 
-  const [isLoggedIn, setLoggedIn] = useState(true);
+  const navigate = useNavigate();
+  const [isLoggedIn, setLoggedIn] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
+
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
+    auth.checkToken(jwt)
+      .then((data) => {
+        if (!data) {
+          return;
+        }
+        setLoggedIn(true);
+        setUserEmail(data.data.email);
+        navigate("/");
+      })
+      .catch(
+        (err) => {
+          console.error(err);
+          setLoggedIn(false)
+        });
+  }
+
+  useEffect(() => {
+    tokenCheck();
+    // eslint-disable-next-line
+  }, [])
+
+  const handleLogin = (email, password) => {
+    setLoggedIn(true);
+    auth.authorize(email, password)
+      .then((data) => {
+        setUserEmail(email);
+        navigate("/");
+        localStorage.setItem("jwt", data.token);
+      })
+      .catch((err) => console.error(err));
+  }
+
+  const handleLogout = () => {
+      localStorage.removeItem("jwt");
+      setLoggedIn(false);
+      navigate("/sign-in");
+  }
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -138,7 +181,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
         <div className="page">
-          <Header />
+          <Header userEmail={userEmail} onSignOut={handleLogout} />
 
           <Routes>
             <Route path="/" element={
@@ -155,9 +198,8 @@ function App() {
               />
             } />
 
-            <Route path="/sign-in" element={<Login />} />
+            <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
             <Route path="/sign-up" element={<Register />} />
-
             <Route path="/*" element={<Navigate to={isLoggedIn ? "/" : "/sign-in"} replace />} />
           </Routes>
 
