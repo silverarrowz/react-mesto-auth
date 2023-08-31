@@ -55,8 +55,6 @@ const Login = ({ handleLogin, setUserEmail, setInfoToolTipOpen, setAuthSuccess }
                         id="email"
                         name="email"
                         placeholder="Email"
-                        minlength="2"
-                        maxlength="30"
                         required />
                     <span className="form__error form__error_field_email" id="email-error">
                     </span>
@@ -70,7 +68,6 @@ const Login = ({ handleLogin, setUserEmail, setInfoToolTipOpen, setAuthSuccess }
                         id="password"
                         name="password"
                         placeholder="Пароль"
-                        minlength="2"
                         required />
                     <span className="form__error form__error_field_password" id="password-error">
                     </span>
