@@ -14,4 +14,4 @@
 ----
 
 ## Ссылка на сайт проекта:
-https://silverarrowz.github.io/mesto-react-auth
+https://silverarrowz.github.io/react-mesto-auth
