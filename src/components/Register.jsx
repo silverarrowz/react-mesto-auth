@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import * as api from "../utils/apiAuth";
 
 
-const Register = () => {
-    
+const Register = ({ setInfoToolTipOpen, setAuthSuccess }) => {
+
     const navigate = useNavigate();
-    
+
     const [inputValues, setInputValues] = useState({
         email: "",
         password: "",
@@ -23,10 +23,18 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         api.register(inputValues.email, inputValues.password)
-        .then((data) => {
-            navigate("/sign-in");
-        })
-        .catch((error) => console.error(error));
+            .then((data) => {
+                if (data) {
+                    setAuthSuccess(true)
+                    setInfoToolTipOpen(true);
+                    navigate("/sign-in", { replace: true });
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                setAuthSuccess(false);
+                setInfoToolTipOpen(true);
+            });
     }
 
     return (
