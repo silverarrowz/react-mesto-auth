@@ -30,7 +30,7 @@ function EditAvatarPopup(props) {
             <input
                 value={values.link || ''}
                 onChange={handleChange}
-                className={`form__item form__item_avatar-url ${!isValid && 'form__item_type_error'}`}
+                className={`form__item form__item_avatar-url ${errors.link && 'form__item_type_error'}`}
                 type="url"
                 id="avatar"
                 name="link"

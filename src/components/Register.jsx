@@ -46,11 +46,12 @@ const Register = ({ setInfoToolTipOpen, setAuthSuccess }) => {
                     <input
                         onChange={handleChange}
                         value={values.email || ''}
-                        className={`form__item auth__form-item ${!isValid && 'form__item_type_error'}`}
+                        className={`form__item auth__form-item ${errors.email && 'form__item_type_error'}  ${errors.email && 'auth__form-item_type_error'}`}
                         type="email"
                         id="email"
                         name="email"
                         placeholder="Email"
+                        minLength="4"
                         required />
                     <span className="form__error form__error_field_email" id="email-error">
                         {errors.email}
@@ -61,11 +62,12 @@ const Register = ({ setInfoToolTipOpen, setAuthSuccess }) => {
                     <input
                         onChange={handleChange}
                         value={values.password || ''}
-                        className={`form__item auth__form-item ${!isValid && 'form__item_type_error'}`}
+                        className={`form__item auth__form-item ${errors.password && 'form__item_type_error'}  ${errors.password && 'auth__form-item_type_error'}`}
                         type="password"
                         id="password"
                         name="password"
                         placeholder="Пароль"
+                        minLength="2"
                         required />
                     <span className="form__error form__error_field_password" id="password-error">
                         {errors.password}

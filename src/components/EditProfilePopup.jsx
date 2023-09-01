@@ -33,7 +33,7 @@ function EditProfilePopup(props) {
       <label className="form__field">
         <input
           onChange={handleChange}
-          className={`form__item form__item_user_name ${!isValid && 'form__item_type_error'}`}
+          className={`form__item form__item_user_name ${errors.name && 'form__item_type_error'}`}
           type="text"
           id="name"
           name="name"
@@ -48,7 +48,7 @@ function EditProfilePopup(props) {
       <label className="form__field">
         <input
           onChange={handleChange}
-          className={`form__item form__item_user_about ${!isValid && 'form__item_type_error'}`}
+          className={`form__item form__item_user_about ${errors.about && 'form__item_type_error'}`}
           type="text"
           id="about"
           name="about"

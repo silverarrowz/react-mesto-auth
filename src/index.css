@@ -65,6 +65,7 @@
 @import url(./blocks/auth/__form/auth__form.css);
 @import url(./blocks/auth/__submit-btn/auth__submit-btn.css);
 @import url(./blocks/auth/__form-item/auth__form-item.css);
+@import url(./blocks/auth/__form-item/_type/auth__form-item_type_error.css);
 @import url(./blocks/auth/__signin-link/auth__signin-link.css);
 
 @import url(./blocks/info-tool-tip/info-tool-tip.css);

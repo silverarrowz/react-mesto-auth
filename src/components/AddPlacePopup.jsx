@@ -27,7 +27,7 @@ function AddPlacePopup(props) {
             <label className="form__field">
                 <input
                     onChange={handleChange}
-                    className={`form__item form__item_card_name ${!isValid && 'form__item_type_error'}`}
+                    className={`form__item form__item_card_name ${errors.name && 'form__item_type_error'}`}
                     type="text"
                     id="place"
                     name="name"
@@ -47,7 +47,7 @@ function AddPlacePopup(props) {
             <label className="form__field">
                 <input
                     onChange={handleChange}
-                    className={`form__item form__item_card_about ${!isValid && 'form__item_type_error'}`}
+                    className={`form__item form__item_card_about ${errors.link && 'form__item_type_error'}`}
                     type="url"
                     id="link"
                     name="link"

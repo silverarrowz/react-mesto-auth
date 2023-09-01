@@ -10,14 +10,17 @@ export function useFormAndValidation() {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
         setErrors({ ...errors, [name]: e.target.validationMessage });
-        setIsValid(e.target.closest('form').checkValidity());
-        setSubmitBtnDisabled(!(e.target.closest('form').checkValidity()));
+        
+        const isInputValid = e.target.checkValidity();
+        setIsValid(isInputValid);
+        setSubmitBtnDisabled(!isInputValid);
     };
 
-    const resetForm = useCallback((newValues = {}, newErrors = {}, newIsValid = true) => {
+    const resetForm = useCallback((newValues = {}, newErrors = {}, newIsValid = false) => {
         setValues(newValues);
         setErrors(newErrors);
         setIsValid(newIsValid);
+        setSubmitBtnDisabled(true);
     }, [setValues, setErrors, setIsValid]);
 
     return { values, handleChange, errors, isValid, resetForm, setValues, setIsValid, isSubmitBtnDisabled, setSubmitBtnDisabled };
