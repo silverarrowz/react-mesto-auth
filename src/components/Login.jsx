@@ -5,7 +5,7 @@ import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const Login = ({ handleLogin, setUserEmail, setInfoToolTipOpen, setAuthSuccess }) => {
 
-    const { values, handleChange, errors, isValid, resetForm, isSubmitBtnDisabled, setSubmitBtnDisabled } = useFormAndValidation();
+    const { values, handleChange, errors, resetForm, isSubmitBtnDisabled, setSubmitBtnDisabled } = useFormAndValidation();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -29,7 +29,6 @@ const Login = ({ handleLogin, setUserEmail, setInfoToolTipOpen, setAuthSuccess }
             .finally(() => {
                 resetForm();
                 setIsLoading(false);
-                setSubmitBtnDisabled(true);
             })
     }
 

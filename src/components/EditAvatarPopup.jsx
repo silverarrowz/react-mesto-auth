@@ -4,11 +4,10 @@ import { useEffect } from "react";
 
 function EditAvatarPopup(props) {
 
-    const { values, handleChange, errors, isValid, resetForm, isSubmitBtnDisabled, setSubmitBtnDisabled } = useFormAndValidation();
+    const { values, handleChange, errors, resetForm, isSubmitBtnDisabled } = useFormAndValidation();
 
     useEffect(() => {
         resetForm();
-        setSubmitBtnDisabled(true);
     }, [props.isOpen])
 
     function handleSubmit(e) {

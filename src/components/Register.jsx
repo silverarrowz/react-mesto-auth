@@ -5,7 +5,7 @@ import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const Register = ({ setInfoToolTipOpen, setAuthSuccess }) => {
 
-    const { values, handleChange, errors, isValid, resetForm, isSubmitBtnDisabled, setSubmitBtnDisabled } = useFormAndValidation();
+    const { values, handleChange, errors, resetForm, isSubmitBtnDisabled } = useFormAndValidation();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
