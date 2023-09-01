@@ -1,28 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../utils/apiAuth";
-
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const Register = ({ setInfoToolTipOpen, setAuthSuccess }) => {
 
+    const { values, handleChange, errors, isValid, resetForm, isSubmitBtnDisabled, setSubmitBtnDisabled } = useFormAndValidation();
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const [inputValues, setInputValues] = useState({
-        email: "",
-        password: "",
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setInputValues({
-            ...inputValues,
-            [name]: value,
-        })
-    }
-
     const handleSubmit = (e) => {
+        setIsLoading(true);
         e.preventDefault();
-        api.register(inputValues.email, inputValues.password)
+        api.register(values.email, values.password)
             .then((data) => {
                 if (data) {
                     setAuthSuccess(true)
@@ -34,7 +24,11 @@ const Register = ({ setInfoToolTipOpen, setAuthSuccess }) => {
                 console.error(err);
                 setAuthSuccess(false);
                 setInfoToolTipOpen(true);
-            });
+            })
+            .finally(() => {
+                resetForm();
+                setIsLoading(false);
+            })
     }
 
     return (
@@ -51,34 +45,38 @@ const Register = ({ setInfoToolTipOpen, setAuthSuccess }) => {
                 <label className="form__field auth__form-field">
                     <input
                         onChange={handleChange}
-                        className="form__item auth__form-item"
+                        value={values.email || ''}
+                        className={`form__item auth__form-item ${!isValid && 'form__item_type_error'}`}
                         type="email"
                         id="email"
                         name="email"
                         placeholder="Email"
                         required />
                     <span className="form__error form__error_field_email" id="email-error">
+                        {errors.email}
                     </span>
                 </label>
 
                 <label className="form__field auth__form-field">
                     <input
                         onChange={handleChange}
-                        className="form__item auth__form-item"
+                        value={values.password || ''}
+                        className={`form__item auth__form-item ${!isValid && 'form__item_type_error'}`}
                         type="password"
                         id="password"
                         name="password"
                         placeholder="Пароль"
                         required />
                     <span className="form__error form__error_field_password" id="password-error">
+                        {errors.password}
                     </span>
                 </label>
 
                 <button
-                    className="form__save-btn auth__submit-btn"
+                    className={`form__save-btn auth__submit-btn ${isSubmitBtnDisabled && 'form__save-btn_disabled'}`}
                     type="submit"
                     aria-label="Зарегистрироваться">
-                    Зарегистрироваться
+                    {isLoading ? 'Подождите...' : 'Зарегистрироваться'}
                 </button>
             </form>
             <Link to="/sign-in" className="auth__signin-link">Уже зарегистрированы? Войти</Link>

@@ -1,35 +1,28 @@
 import React, { useState, useContext, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 function EditProfilePopup(props) {
 
   const currentUser = useContext(CurrentUserContext);
-
-  const [inputValues, setInputValues] = useState({
-    name: '',
-    about: ''
-  })
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputValues({
-      ...inputValues,
-      [name]: value,
-    })
-  }
+  const { values, handleChange, errors, isValid, setValues, resetForm, isSubmitBtnDisabled } = useFormAndValidation();
 
   useEffect(() => {
-    setInputValues(currentUser);
-  }, [currentUser])
+    resetForm();
+    setValues(currentUser);
+  }, [currentUser, props.isOpen])
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onUpdateUser(inputValues);
+    if (isValid) {
+      props.onUpdateUser(values);
+    }
   };
 
   return (
     <PopupWithForm
+      isSubmitBtnDisabled={isSubmitBtnDisabled}
       name="profile-edit"
       title="Редактировать профиль"
       buttonText={props.isLoading ? 'Сохранение...' : 'Сохранить'}
@@ -40,31 +33,31 @@ function EditProfilePopup(props) {
       <label className="form__field">
         <input
           onChange={handleChange}
-          className="form__item form__item_user_name"
+          className={`form__item form__item_user_name ${!isValid && 'form__item_type_error'}`}
           type="text"
           id="name"
           name="name"
-          value={inputValues.name || ''}
+          value={values.name || ''}
           placeholder="Имя"
           minLength="2"
           maxLength="40"
           required />
-        <span className="form__error" id="name-error"></span>
+        <span className="form__error" id="name-error">{errors.name}</span>
       </label>
 
       <label className="form__field">
         <input
           onChange={handleChange}
-          className="form__item form__item_user_about"
+          className={`form__item form__item_user_about ${!isValid && 'form__item_type_error'}`}
           type="text"
           id="about"
           name="about"
-          value={inputValues.about || ''}
+          value={values.about || ''}
           placeholder="О себе"
           minLength="2"
           maxLength="200"
           required />
-        <span className="form__error" id="about-error"></span>
+        <span className="form__error" id="about-error">{errors.about}</span>
       </label>
     </PopupWithForm>
   )
